@@ -1,0 +1,27 @@
+version: "2"
+services:
+  app:
+    container_name: sunportal
+    restart: always
+    volumes:
+      - ./:/var/www/sun-portal
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - mysql
+  mysql:
+    restart: always
+    image: mysql:5.7
+    volumes:
+      - ./db_data:/var/lib/mysql
+    expose:
+      - "3306"
+    build: ./database_config
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8001:8080
